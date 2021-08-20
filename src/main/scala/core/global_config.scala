@@ -1,6 +1,6 @@
 package core
 
-import Chisel.BitPat
+import Chisel.{BitPat, ListLookup}
 import chisel3._
 import chisel3.util.log2Up
 
@@ -31,14 +31,16 @@ object global_config {
   val Src2Reg = "b1".U
   val Src2TypeWidth = log2Up(Src2TypeNum).W
 
-  val SrcTypeTable = List(
-    InstrI -> (Src1Reg, Src2Imm),
-    InstrR -> (Src1Reg, Src2Reg),
-    InstrS -> (Src1Reg, Src2Imm),
-    InstrB -> (Src1Reg, Src2Reg),
-    InstrU -> (Src1Pc , Src2Imm),
-    InstrJ -> (Src1Pc , Src2Imm),
-    InstrN -> (Src1Pc , Src2Imm)
+
+
+  val SrcTypeTable = Array(
+    BitPat(InstrI) ->  List(Src1Reg, Src2Imm),
+    BitPat(InstrR) ->  List(Src1Reg, Src2Reg),
+    BitPat(InstrS) ->  List(Src1Reg, Src2Imm),
+    BitPat(InstrB) ->  List(Src1Reg, Src2Reg),
+    BitPat(InstrU) ->  List(Src1Pc , Src2Imm),
+    BitPat(InstrJ) ->  List(Src1Pc , Src2Imm),
+    BitPat(InstrN) ->  List(Src1Pc , Src2Imm)
   )
 
   /* function unit type */

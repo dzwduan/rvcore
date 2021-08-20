@@ -17,6 +17,13 @@ class EXU extends Module{
   val src2 = io.in.data.src2.asUInt()
   val func = io.in.ctrl.fuOpType.asUInt()
 
-  io.in<>io.out
+  io.out.data :=DontCare
   io.out.data.dest := Mux(io.in.ctrl.fuType === FuAlu,ALU(src1,src2,func),0.U)
+
+  io.out.ctrl := DontCare
+  (io.out.ctrl, io.in.ctrl) match { case (o, i) =>
+    o.rfWen := i.rfWen
+    o.rfDest := i.rfDest
+  }
+  io.out.pc := io.in.pc
 }

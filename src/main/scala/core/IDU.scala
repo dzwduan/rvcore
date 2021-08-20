@@ -90,9 +90,11 @@ package core
     io.out.ctrl.rfSrc1 := rs1
     io.out.ctrl.rfSrc2 := rs2
 
-    io.out.ctrl.src1Type := MuxLookup(inst_type,0.U,SrcTypeTable.map(p=>(p._1,p._2._1)))
-    io.out.ctrl.src1Type := MuxLookup(inst_type,0.U,SrcTypeTable.map(p=>(p._1,p._2._2)))
-
+    val t1::t2::Nil = ListLookup(inst_type,List(Src1Reg, Src2Imm),SrcTypeTable)
+    io.out.ctrl.src1Type := t1
+    io.out.ctrl.src2Type := t2
+    printf("type 1" + t1)
+    printf("type 2" + t2)
   }
 
 

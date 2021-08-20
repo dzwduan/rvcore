@@ -39,7 +39,14 @@ class ISU extends Module{
   }
 
   io.out.pc := io.in.pc
-  io.out.ctrl <> io.in.ctrl
+
+  io.out.ctrl := DontCare
+  (io.out.ctrl, io.in.ctrl) match { case (o, i) =>
+    o.fuType := i.fuType
+    o.fuOpType := i.fuOpType
+    o.rfWen := i.rfWen
+    o.rfDest := i.rfDest
+  }
 
   when(io.in.ctrl.isTrap(1) === 1.U){
     io.trap := 2.U
