@@ -1,6 +1,6 @@
 // See README.md for license details.
 
-ThisBuild / scalaVersion     := "2.12.13"
+ThisBuild / scalaVersion     := "2.12.10"
 ThisBuild / version          := "0.1.0"
 ThisBuild / organization     := "com.github.dzwduan"
 
@@ -10,7 +10,7 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "edu.berkeley.cs" %% "chisel3" % "3.4.3",
       "edu.berkeley.cs" %% "chiseltest" % "0.3.3" % "test",
-      "edu.berkeley.cs" %% "chisel-iotesters" % "1.4.1+"
+      "edu.berkeley.cs" %% "chisel-iotesters" % "1.5.+"
     ),
     scalacOptions ++= Seq(
       "-Xsource:2.11",

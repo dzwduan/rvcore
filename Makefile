@@ -10,11 +10,11 @@ $(TOP_V): $(SCALA_FILE)
 	sbt 'runMain top.$(TOP) -td $(@D) --output-file $@'
 
 test:
-	sbt 'test:runMain core.TestMain -td $(BUILD_DIR) --image $(IMAGE)'
+	sbt 'test:runMain rvcore.TestMain -td $(BUILD_DIR) --image $(IMAGE)'
 
 emu:
-	sbt 'test:runMain core.TestMain -td $(BUILD_DIR) --image $(IMAGE) --backend-name verilator --generate-vcd-output off'
+	sbt 'test:runMain rvcore.TestMain -td $(BUILD_DIR) --image $(IMAGE) --backend-name verilator --generate-vcd-output on'
 
 
 clean:
-	rm -rf $(OBJ_DIR)/*
+	rm -rf $(BUILD_DIR)
