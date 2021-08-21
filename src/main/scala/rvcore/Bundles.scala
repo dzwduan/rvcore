@@ -18,18 +18,18 @@ class CtrlPathIO extends Bundle {
 }
 
 class DataPathIO extends Bundle {
-  val src1 = Output(UInt(32.W))
-  val src2 = Output(UInt(32.W))
-  val dest = Output(UInt(32.W))
+  val src1 = Output(UInt(data_width))
+  val src2 = Output(UInt(data_width))
+  val dest = Output(UInt(data_width))
 }
 
 class PcInstrIO extends Bundle {
-  val instr = Output(UInt(32.W))
-  val pc = Output(UInt(32.W))
+  val instr = Output(UInt(inst_width))
+  val pc = Output(UInt(addr_width))
 }
 
 class PcCtrlDataIO extends Bundle {
-  val pc = Output(UInt(32.W))
+  val pc = Output(UInt(addr_width))
   val ctrl = new CtrlPathIO
   val data = new DataPathIO
 }
@@ -37,18 +37,19 @@ class PcCtrlDataIO extends Bundle {
 class WriteBackIO extends Bundle {
   val rfWen = Output(Bool())
   val rfDest = Output(UInt(5.W))
-  val rfWdata = Output(UInt(32.W))
+  val rfWdata = Output(UInt(data_width))
 }
 
 
 class ABundle extends Bundle {
-  val addr = Output(UInt(32.W))
-  val wdata = Output(UInt(32.W))
+  val addr = Output(UInt(addr_width))
+  val size = Output(UInt(2.W))
+  val wdata = Output(UInt(data_width))
   val wen = Output(Bool())
 }
 
 class RBundle extends Bundle {
-  val rdata = Output(UInt(32.W))
+  val rdata = Output(UInt(data_width))
 }
 
 class MemIO extends Bundle {
@@ -58,5 +59,5 @@ class MemIO extends Bundle {
 
 class BranchIO extends Bundle {
   val isTaken = Output(Bool())
-  val target = Output(UInt(32.W))
+  val target = Output(UInt(addr_width))
 }

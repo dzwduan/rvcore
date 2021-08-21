@@ -1,6 +1,7 @@
 package rvcore
 
 import chisel3._
+import global_config._
 
 
 //initialize imem and output pc with instr
@@ -19,12 +20,13 @@ class IFUIO extends Bundle{
 class IFU extends Module with pc_init {
   val io = IO(new IFUIO)
 
-  val pc = RegInit(init_val.U(32.W))
+  val pc = RegInit(init_val.U(addr_width))
 
   pc := Mux(io.br.isTaken,io.br.target,pc+4.U)
 
   io.imem.out.valid    := true.B
   io.imem.out.bits.wen := false.B
+  io.imem.out.bits.size := LsuLw
   io.imem.out.bits.addr := pc
   io.imem.out.bits.wdata := DontCare
 

@@ -1,9 +1,10 @@
 package rvcore
 
 import chisel3._
+import global_config._
 
 class Reg{
-  val regfiles = Mem(32,UInt(32.W))
+  val regfiles = Mem(32,UInt(64.W))
   def read(addr:UInt) = {
     Mux(addr===0.U,0.U,regfiles(addr))
   }
@@ -30,9 +31,9 @@ class ISU extends Module{
   val rs1data = rf.read(io.in.ctrl.rfSrc1)
   val rs2data = rf.read(io.in.ctrl.rfSrc2)
   io.out.data.src1 := Mux(io.in.ctrl.src1Type.asBool(),io.in.pc,rs1data)
-  io.out.data.src2 := Mux(io.in.ctrl.src2Type.asBool(),rs2data,io.in.data.src2)
+  io.out.data.src2 := Mux(io.in.ctrl.src2Type === Src2Reg,rs2data,io.in.data.src2)
 
-  io.out.data.dest := rs2data
+  io.out.data.dest := rs2data //why?
 
   when(io.wb.rfWen) {
     rf.write(io.wb.rfDest,io.wb.rfWdata)

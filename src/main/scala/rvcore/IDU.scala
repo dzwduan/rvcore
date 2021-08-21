@@ -67,13 +67,13 @@ package rvcore
     val Zimm = inst(19, 15)
 
 
-    val imm = MuxLookup(inst_type, sext(32,Iimm) ,
+    val imm = MuxLookup(inst_type, sext(xlen,Iimm) ,
       Seq(
-        InstrI -> sext(32,Iimm),
-        InstrS -> sext(32,Simm),
-        InstrB -> sext(32,Bimm),
-        InstrU -> sext(32,Uimm),
-        InstrJ -> sext(32,Jimm))
+        InstrI -> sext(xlen,Iimm),
+        InstrS -> sext(xlen,Simm),
+        InstrB -> sext(xlen,Bimm),
+        InstrU -> sext(xlen,Uimm),
+        InstrJ -> sext(xlen,Jimm))
     ).asUInt
 
     io.out.pc := io.in.pc
@@ -83,7 +83,7 @@ package rvcore
 
     io.out.ctrl.rfWen := isrfWen(inst_type) //only u i r j type can write
     io.out.ctrl.rfDest:= rd
-    io.out.ctrl.fuType := fu_type
+    io.out.ctrl.fuType   := fu_type
     io.out.ctrl.fuOpType := fu_op_type
     io.out.ctrl.isTrap := Cat(inst_type===InstrN,inst===TRAP)
     io.out.ctrl.rfSrc1 := rs1
@@ -92,9 +92,8 @@ package rvcore
     val t1::t2::Nil = ListLookup(inst_type,List(Src1Reg, Src2Imm),SrcTypeTable)
     io.out.ctrl.src1Type := t1
     io.out.ctrl.src2Type := t2
-    printf("type 1" + t1)
-    printf("type 2" + t2)
 
+    printf("IDU: pc = 0x%x, instr = 0x%x, src1 = 0x%x, src2 = 0x%x imm = 0x%x\n", io.in.pc, inst, io.out.data.src1, io.out.data.src2,imm)
   }
 
 

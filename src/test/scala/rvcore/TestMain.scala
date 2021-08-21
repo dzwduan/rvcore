@@ -5,7 +5,7 @@ import chisel3.iotesters.Driver
 
 
 object TestMain extends App{
-  var imgPath = ""
+  var imgPath = "/home/dzw/rvcore/inst/build/dummy-riscv64-mycpu.bin"
   var newArgs:Array[String] = Array()
   args.sliding(2,2).toList.collect{
     case Array("--img",argImg:String) => imgPath = argImg

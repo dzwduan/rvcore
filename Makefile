@@ -3,7 +3,7 @@ BUILD_DIR = ./build
 TOP_V = $(BUILD_DIR)/$(TOP).v
 SCALA_FILE = $(shell find ./src/main/scala -name '*.scala')
 
-IMAGE = ""
+IMAGE = "inst/dummy-riscv64-mycpu.bin"
 
 $(TOP_V): $(SCALA_FILE)
 	mkdir -p $(@D)
@@ -17,4 +17,4 @@ emu:
 
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf test_run_dir

@@ -14,14 +14,14 @@ class RVcore extends Module{
   val exu = Module(new EXU)
   val wbu = Module(new WBU)
 
-  io.imem <> ifu.io.imem
+  io.imem   <> ifu.io.imem
   idu.io.in <> ifu.io.out
   isu.io.in <> idu.io.out
-  io.dmem <> exu.io.dmem
+  io.dmem   <> exu.io.dmem
   exu.io.in <> isu.io.out
   wbu.io.in <> exu.io.out
   exu.io.br <> wbu.io.brin
   isu.io.wb <> wbu.io.wb
   ifu.io.br <> wbu.io.brout
-  io.trap := isu.io.trap
+  io.trap   := isu.io.trap
 }
