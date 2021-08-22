@@ -10,7 +10,8 @@ $(TOP_V): $(SCALA_FILE)
 	sbt 'runMain top.$(TOP) -td $(@D) --output-file $@'
 
 test:
-	sbt 'test:runMain rvcore.TestMain -td $(BUILD_DIR) --image $(IMAGE)'
+	#sbt 'test:runMain rvcore.TestMain -td $(BUILD_DIR) --image $(IMAGE)'
+	sbt 'testOnly rvcore.TopTester -td $(BUILD_DIR)'
 
 emu:
 	sbt 'test:runMain rvcore.TestMain -td $(BUILD_DIR) --image $(IMAGE) --backend-name verilator --generate-vcd-output on'
@@ -18,3 +19,4 @@ emu:
 
 clean:
 	rm -rf test_run_dir
+

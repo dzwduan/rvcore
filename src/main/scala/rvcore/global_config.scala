@@ -49,11 +49,12 @@ object global_config {
   )
 
   /* function unit type */
-  private val FuTypeNum = 4
-  val FuAlu = "b00".U
-  val FuBru = "b01".U
-  val FuLsu = "b10".U
-  val FuMdu = "b11".U
+  private val FuTypeNum = 5
+  val FuAlu = "b000".U
+  val FuBru = "b001".U
+  val FuLsu = "b010".U
+  val FuMdu = "b011".U
+  val FuCsr = "b100".U
   val FuTypeWidth = log2Up(FuTypeNum).W
 
   /* ALU operation type */
@@ -94,6 +95,11 @@ object global_config {
   val LsuSh   = "b1001".U
   val LsuSw   = "b1010".U
   val LsuSd   = "b1011".U
+
+  private val fuOpTypeCsrNum = 3
+  val CsrJmp = "b0000".U
+  val CsrSet = "b0001".U
+  val CsrWrt = "b0010".U
 
   /* MDU operation type */
   private val FuOpTypeMduNum  = 0
@@ -151,6 +157,10 @@ object global_config {
   val REM     = BitPat("b0000001_?????_?????_110_?????_0110011")
   val REMU    = BitPat("b0000001_?????_?????_111_?????_0110011")
 
+  val CSRRW   = BitPat("b????????????_?????_001_?????_1110011")
+  val CSRRS   = BitPat("b????????????_?????_010_?????_1110011")
+  val ECALL   = BitPat("b001100000010_00000_000_00000_1110011")
+  val MRET    = BitPat("b000000000000_00000_000_00000_1110011")
   val TRAP    = BitPat("b????????????_?????_000_?????_1101011")
 
   /* decode table */
@@ -204,6 +214,11 @@ object global_config {
 //    DIVU           -> List(InstrR, FuMdu, MduDivu),
 //    REM            -> List(InstrR, FuMdu, MduRem),
 //    REMU           -> List(InstrR, FuMdu, MduRemu),
+
+    CSRRW          ->   List(InstrI, FuCsr, CsrWrt),
+    CSRRS          ->   List(InstrI, FuCsr, CsrSet),
+    ECALL          ->   List(InstrI, FuCsr, CsrJmp),
+    MRET           ->   List(InstrI, FuCsr, CsrJmp),
 
     TRAP           -> List(InstrI, FuAlu, AluAdd)
   )
