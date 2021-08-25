@@ -1,22 +1,53 @@
-TOP = TopMain
 BUILD_DIR = ./build
-TOP_V = $(BUILD_DIR)/$(TOP).v
-SCALA_FILE = $(shell find ./src/main/scala -name '*.scala')
+# Change this directory before make
+HOHAI_HOME = /home/dzw/hohai
 
-IMAGE = "inst/dummy-riscv64-mycpu.bin"
+VERILATOR_FLAGS = -cc --exe -Os -x-assign 0 \
+	--assert --trace
 
-$(TOP_V): $(SCALA_FILE)
-	mkdir -p $(@D)
-	sbt 'runMain top.$(TOP) -td $(@D) --output-file $@'
+VERILATOR_INPUT = $(HOHAI_HOME)/build/Top.v $(HOHAI_HOME)/src/test/csrc/main.cpp
 
-test:
-	#sbt 'test:runMain rvcore.TestMain -td $(BUILD_DIR) --image $(IMAGE)'
-	sbt 'testOnly rvcore.TopTester -td $(BUILD_DIR)'
+default: run
 
-emu:
-	sbt 'test:runMain rvcore.TestMain -td $(BUILD_DIR) --image $(IMAGE) --backend-name verilator --generate-vcd-output on'
+verilog:
+	mkdir -p $(BUILD_DIR)
+	./mill -i hohai.runMain hohai.TopMain -td $(BUILD_DIR)
 
+run: verilog
+	@echo
+	@echo "-- VERILATE ----------------"
+	verilator $(VERILATOR_FLAGS) $(VERILATOR_INPUT)
+	@echo
+
+	@echo "-- BUILD -------------------"
+	$(MAKE) -j -C obj_dir -f VTop.mk
+	@echo
+
+	@echo "-- RUN ---------------------"
+	@rm -rf logs
+	@mkdir -p logs
+	obj_dir/VTop +trace
+	@echo
+	
+	@echo "-- DONE --------------------"
+	@echo "To see waveforms, open vlt_dump.vcd in a waveform viewer"
+	@echo
+
+help:
+	./mill -i hohai.runMain TopMain --help
+
+compile:
+	./mill -i __.compile
+
+reformat:
+	./mill -i __.reformat
+
+checkformat:
+	./mill -i __.checkFormat
 
 clean:
-	rm -rf test_run_dir
+	-rm -rf $(BUILD_DIR)
+	-rm -rf obj_dir
+	-rm -rf logs
 
+.PHONY: verilog help reformat checkformat clean
